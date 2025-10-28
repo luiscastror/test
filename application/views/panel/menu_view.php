@@ -13,10 +13,10 @@
           <a class="nav-link" href="<?php echo base_url('users'); ?>">Usuarios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?php echo base_url('panel/categories'); ?>">Categorias</a>
+          <a class="nav-link" href="<?php echo base_url('categories'); ?>">Categorias</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?php echo base_url('panel/items'); ?>">Productos</a>
+          <a class="nav-link" href="<?php echo base_url('items'); ?>">Productos</a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">
