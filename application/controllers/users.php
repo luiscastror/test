@@ -52,12 +52,15 @@
                 'role' => $this->input->post('role')
             );
             
+
             $password = $this->input->post('password');
             if (!empty($password)) {
                 $data['password'] = $password;
             }
             
+            $data = $this->security->xss_clean($data);
             $user = $this->users_model->update($id, $data);
+
             if($user){
                 $this->session->set_flashdata('success', 'Usuario actualizado correctamente');
             }else{

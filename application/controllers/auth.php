@@ -5,6 +5,7 @@ class Auth extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('auth_model');
+        // $this->load->library('form_validation');
     }
 
 	public function index() {
@@ -22,6 +23,16 @@ class Auth extends CI_Controller {
             'email' => $this->input->post('email'),
             'password' => $this->input->post('password')
         );
+
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+
+        $data = $this->security->xss_clean($data);
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('error', 'Credenciales incorrectas');
+            redirect('auth/login');
+        }
 
         $user = $this->auth_model->getOne($data['email']);
         

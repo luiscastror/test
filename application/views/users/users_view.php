@@ -159,6 +159,7 @@
                     </div>
                 </div>
             </div>
+            <?php  if($this->session->userdata('user_role') == 'admin') { ?>
             <div class="col-lg-4">
                 <div class="card shadow">
                     <div class="card-header">
@@ -186,6 +187,7 @@
                     </div>
                 </div>
             </div>
+            <?php } ?>
         </div>
     </div>
 </main>
