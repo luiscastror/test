@@ -58,3 +58,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Insertar usuarios de prueba
+-- Contraseña para ambos usuarios: "123456"
+INSERT INTO `users` (`name`, `email`, `password`, `role`, `status`) VALUES
+('Administrador', 'admin@gmail.com', '$2y$10$jmExgnJ/ntNrqwJMEleM5u1fHkFsGjgKNwApg8eavQqXHojCLL4Ju', 'admin', 'activo'),
+('Usuario Normal', 'user@gmail.com', '$2y$10$jmExgnJ/ntNrqwJMEleM5u1fHkFsGjgKNwApg8eavQqXHojCLL4Ju', 'usuario', 'activo');

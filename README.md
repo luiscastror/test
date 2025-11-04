@@ -127,7 +127,7 @@ test/
 
 2. **Configurar la base de datos**
    - Abrir phpMyAdmin: `http://localhost/phpmyadmin`
-   - Crear base de datos: `test_db`
+   - Crear base de datos: `test_code`
    - Importar: `database_schema.sql`
 
 3. **Configurar CodeIgniter**
@@ -136,7 +136,7 @@ test/
    $db['default']['hostname'] = 'localhost';
    $db['default']['username'] = 'root';
    $db['default']['password'] = '';
-   $db['default']['database'] = 'test_db';
+   $db['default']['database'] = 'test_code';
    ```
 
 4. **Configurar URL base**
