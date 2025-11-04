@@ -19,6 +19,7 @@
         }
 
         public function edit($id) {
+
             $category = $this->categories_model->get_by_id($id);
             $data = array(
                 'category' => $category
@@ -30,6 +31,15 @@
         }
 
         public function create() {
+
+            $this->form_validation->set_rules('name', 'Nombre', 'required');
+            $this->form_validation->set_rules('description', 'Descripción', 'required');
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->session->set_flashdata('error', 'Error al crear la categoría');
+                redirect('categories');
+            }
+
             $data = array(
                 'name' => $this->input->post('name'),
                 'description' => $this->input->post('description')
@@ -46,6 +56,15 @@
         }
 
         public function update($id) {
+
+            $this->form_validation->set_rules('name', 'Nombre', 'required');
+            $this->form_validation->set_rules('description', 'Descripción', 'required');
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->session->set_flashdata('error', 'Error al actualizar la categoría');
+                redirect('categories');
+            }
+
             $data = array(
                 'name' => $this->input->post('name'),
                 'description' => $this->input->post('description')

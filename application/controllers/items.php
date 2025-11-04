@@ -20,6 +20,9 @@
         }
 
         public function edit($id) {
+
+            
+
             $item = $this->items_model->get_by_id($id);
             $categories = $this->categories_model->get_all();
             $data = array(
@@ -33,6 +36,18 @@
         }
 
         public function create() {
+
+            $this->form_validation->set_rules('name', 'Nombre', 'required');
+            $this->form_validation->set_rules('description', 'Descripción', 'required');
+            $this->form_validation->set_rules('price', 'Precio', 'required');
+            $this->form_validation->set_rules('category_id', 'Categoría', 'required');
+            $this->form_validation->set_rules('stock', 'Stock', 'required');
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->session->set_flashdata('error', 'Error al crear el producto');
+                redirect('items');
+            }
+            
             $data = array(
                 'name' => $this->input->post('name'),
                 'description' => $this->input->post('description'),
@@ -52,6 +67,18 @@
         }
 
         public function update($id) {
+
+            $this->form_validation->set_rules('name', 'Nombre', 'required');
+            $this->form_validation->set_rules('description', 'Descripción', 'required');
+            $this->form_validation->set_rules('price', 'Precio', 'required');
+            $this->form_validation->set_rules('category_id', 'Categoría', 'required');
+            $this->form_validation->set_rules('stock', 'Stock', 'required');
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->session->set_flashdata('error', 'Error al actualizar el producto');
+                redirect('items');
+            }
+            
             $data = array(
                 'name' => $this->input->post('name'),
                 'description' => $this->input->post('description'),

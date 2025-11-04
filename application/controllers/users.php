@@ -30,6 +30,17 @@
         }
 
         public function create() {
+
+            $this->form_validation->set_rules('name', 'Nombre', 'required');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+            $this->form_validation->set_rules('password', 'Password', 'required');
+            $this->form_validation->set_rules('role', 'Role', 'required');
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->session->set_flashdata('error', 'Error al crear el usuario');
+                redirect('users');
+            }
+
             $data = array(
                 'name' => $this->input->post('name'),
                 'email' => $this->input->post('email'),
@@ -46,6 +57,16 @@
         }
 
         public function update($id) {
+
+            $this->form_validation->set_rules('name', 'Nombre', 'required');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+            $this->form_validation->set_rules('role', 'Role', 'required');
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->session->set_flashdata('error', 'Error al actualizar el usuario');
+                redirect('users');
+            }
+
             $data = array(
                 'name' => $this->input->post('name'),
                 'email' => $this->input->post('email'),
