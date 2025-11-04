@@ -61,13 +61,48 @@
         <div class="row">
             <div class="col-12">
                 <div class="card shadow mb-3">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Lista de Productos</h5>
-                        <div class="d-flex gap-2">
-                            <input type="text" class="form-control form-control-sm" placeholder="Buscar productos..." style="width: 200px;">
-                            <button class="btn btn-outline-secondary btn-sm">
-                                <i class="fas fa-search"></i>
-                            </button>
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0">Lista de Productos</h5>
+                            <small class="text-muted">
+                                Total: <?php echo $total_items; ?> producto(s) 
+                                <?php if (!empty($search_term)): ?>
+                                    | Búsqueda: "<?php echo htmlspecialchars($search_term); ?>"
+                                <?php endif; ?>
+                            </small>
+                        </div>
+                        
+                        <!-- Controles de búsqueda y paginación -->
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <form method="GET" action="<?php echo base_url('items/index'); ?>" class="d-flex gap-2">
+                                    <input type="text" name="search" class="form-control form-control-sm" 
+                                           placeholder="Buscar por nombre, descripción o categoría..." 
+                                           value="<?php echo htmlspecialchars($search_term); ?>">
+                                    <input type="hidden" name="per_page" value="<?php echo $per_page; ?>">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <?php if (!empty($search_term)): ?>
+                                        <a href="<?php echo base_url('items/index' . ($per_page != 5 ? '?per_page=' . $per_page : '')); ?>" 
+                                           class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    <?php endif; ?>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                    <label class="form-label mb-0 text-nowrap">Mostrar:</label>
+                                    <select class="form-select form-select-sm" style="width: auto;" onchange="changePerPage(this.value)">
+                                        <option value="5" <?php echo ($per_page == 5) ? 'selected' : ''; ?>>5</option>
+                                        <option value="10" <?php echo ($per_page == 10) ? 'selected' : ''; ?>>10</option>
+                                        <option value="15" <?php echo ($per_page == 15) ? 'selected' : ''; ?>>15</option>
+                                        <option value="25" <?php echo ($per_page == 25) ? 'selected' : ''; ?>>25</option>
+                                    </select>
+                                    <span class="text-nowrap">por página</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -136,6 +171,40 @@
                                 </tbody>
                             </table>
                         </div>
+                        
+                        <!-- Footer con información de paginación -->
+                        <?php if (!empty($items)): ?>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted">
+                                        Mostrando <?php echo count($items); ?> de <?php echo $total_items; ?> productos
+                                        <?php if ($total_pages > 1): ?>
+                                            | Página <?php echo floor($current_page / $per_page) + 1; ?> de <?php echo $total_pages; ?>
+                                        <?php endif; ?>
+                                    </small>
+                                </div>
+                                <div>
+                                    <?php echo $pagination; ?>
+                                </div>
+                            </div>
+                        </div>
+                        <?php else: ?>
+                        <div class="card-body text-center py-5">
+                            <div class="text-muted">
+                                <i class="fas fa-search fa-3x mb-3"></i>
+                                <h5>No se encontraron productos</h5>
+                                <?php if (!empty($search_term)): ?>
+                                    <p>No hay resultados para: "<strong><?php echo htmlspecialchars($search_term); ?></strong>"</p>
+                                    <a href="<?php echo base_url('items/index' . ($per_page != 5 ? '?per_page=' . $per_page : '')); ?>" class="btn btn-outline-primary">
+                                        <i class="fas fa-arrow-left"></i> Ver todos los productos
+                                    </a>
+                                <?php else: ?>
+                                    <p>Aún no hay productos creados.</p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -149,4 +218,39 @@
             window.location.href = 'items/delete/' + id;
         }
     }
+
+    function changePerPage(perPage) {
+        var currentUrl = new URL(window.location);
+        var search = currentUrl.searchParams.get('search');
+        
+        // Construir nueva URL con segmentos URI
+        var newUrl = '/test/items/index';
+        var params = [];
+        
+        if (search) {
+            params.push('search=' + encodeURIComponent(search));
+        }
+        if (perPage != 5) { // Solo agregar si no es el valor por defecto
+            params.push('per_page=' + perPage);
+        }
+        
+        if (params.length > 0) {
+            newUrl += '?' + params.join('&');
+        }
+        
+        window.location.href = newUrl;
+    }
+
+    // Función para búsqueda con Enter
+    document.addEventListener('DOMContentLoaded', function() {
+        var searchInput = document.querySelector('input[name="search"]');
+        if (searchInput) {
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.form.submit();
+                }
+            });
+        }
+    });
 </script>

@@ -48,5 +48,39 @@ class Items_model extends CI_Model {
         $this->db->where('items.category_id', $category_id);
         return $this->db->get()->result_array();
     }
+
+    public function get_items_paginated($limit, $offset) {
+        $this->db->select('items.*, categories.name as category_name');
+        $this->db->from('items');
+        $this->db->join('categories', 'categories.id = items.category_id', 'left');
+        $this->db->order_by('items.id', 'DESC');
+        $this->db->limit($limit, $offset);
+        return $this->db->get()->result_array();
+    }
+
+    public function search_items($search, $limit, $offset) {
+        $this->db->select('items.*, categories.name as category_name');
+        $this->db->from('items');
+        $this->db->join('categories', 'categories.id = items.category_id', 'left');
+        $this->db->like('items.name', $search);
+        $this->db->or_like('items.description', $search);
+        $this->db->or_like('categories.name', $search);
+        $this->db->order_by('items.id', 'DESC');
+        $this->db->limit($limit, $offset);
+        return $this->db->get()->result_array();
+    }
+
+    public function count_all_items() {
+        return $this->db->count_all('items');
+    }
+
+    public function count_search_results($search) {
+        $this->db->from('items');
+        $this->db->join('categories', 'categories.id = items.category_id', 'left');
+        $this->db->like('items.name', $search);
+        $this->db->or_like('items.description', $search);
+        $this->db->or_like('categories.name', $search);
+        return $this->db->count_all_results();
+    }
     
 }

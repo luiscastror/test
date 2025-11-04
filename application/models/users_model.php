@@ -44,6 +44,31 @@ class Users_model extends CI_Model {
         $this->db->where('email', $email);
         return $this->db->get('users')->row_array();
     }
-    
+
+    public function get_users_paginated($limit, $offset) {
+        $this->db->order_by('id', 'DESC');
+        $this->db->limit($limit, $offset);
+        return $this->db->get('users')->result_array();
+    }
+
+    public function search_users($search, $limit, $offset) {
+        $this->db->like('name', $search);
+        $this->db->or_like('email', $search);
+        $this->db->or_like('role', $search);
+        $this->db->order_by('id', 'DESC');
+        $this->db->limit($limit, $offset);
+        return $this->db->get('users')->result_array();
+    }
+
+    public function count_all_users() {
+        return $this->db->count_all('users');
+    }
+
+    public function count_search_results($search) {
+        $this->db->like('name', $search);
+        $this->db->or_like('email', $search);
+        $this->db->or_like('role', $search);
+        return $this->db->count_all_results('users');
+    }
 
 }
