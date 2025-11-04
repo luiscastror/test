@@ -9,6 +9,13 @@
 
         public function index() {
             $categories = $this->categories_model->get_all();
+            
+            // Agregar conteo de productos a cada categoría
+            foreach ($categories as &$category) {
+                $category['products_count'] = $this->categories_model->get_products_count($category['id']);
+                $category['has_products'] = $category['products_count'] > 0;
+            }
+            
             $data = array(
                 'categories' => $categories
             );
@@ -81,10 +88,30 @@
         }
 
         public function delete($id) {
-            $category = $this->categories_model->delete($id);
-            if($category){
-                $this->session->set_flashdata('success', 'Categoría eliminada correctamente');
-            }else{
+            // Verificar si la categoría existe
+            $category = $this->categories_model->get_by_id($id);
+            if (!$category) {
+                $this->session->set_flashdata('error', 'La categoría no existe');
+                redirect('categories');
+                return;
+            }
+
+            // Verificar si la categoría tiene productos asociados
+            if ($this->categories_model->has_products($id)) {
+                $products_count = $this->categories_model->get_products_count($id);
+                $this->session->set_flashdata('error', 
+                    'No se puede eliminar la categoría "' . $category['name'] . '" porque tiene ' . 
+                    $products_count . ' producto(s) asociado(s). Elimine primero los productos o cambie su categoría.'
+                );
+                redirect('categories');
+                return;
+            }
+
+            // Si no tiene productos asociados, proceder con la eliminación
+            $deleted = $this->categories_model->delete($id);
+            if ($deleted) {
+                $this->session->set_flashdata('success', 'Categoría "' . $category['name'] . '" eliminada correctamente');
+            } else {
                 $this->session->set_flashdata('error', 'Error al eliminar la categoría');
             }
             redirect('categories');

@@ -34,5 +34,16 @@ class Categories_model extends CI_Model {
         $this->db->where('name', $name);
         return $this->db->get('categories')->row_array();
     }
+
+    public function has_products($category_id) {
+        $this->db->where('category_id', $category_id);
+        $count = $this->db->count_all_results('items');
+        return $count > 0;
+    }
+
+    public function get_products_count($category_id) {
+        $this->db->where('category_id', $category_id);
+        return $this->db->count_all_results('items');
+    }
     
 }

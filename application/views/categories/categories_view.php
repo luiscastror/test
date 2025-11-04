@@ -46,6 +46,7 @@
                                         <th>ID</th>
                                         <th>Nombre</th>
                                         <th>Descripción</th>
+                                        <th>Productos</th>
                                         <th>Fecha Creación</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -63,15 +64,28 @@
                                             </div>
                                         </td>
                                         <td><?php echo substr($category['description'], 0, 50) . '...'; ?></td>
-                                        <td><?php echo isset($category['createdAt']) ? $category['createdAt'] : 'N/A'; ?></td>
+                                        <td>
+                                            <?php if ($category['products_count'] > 0): ?>
+                                                <span class="badge bg-info"><?php echo $category['products_count']; ?> producto(s)</span>
+                                            <?php else: ?>
+                                                <span class="badge bg-secondary">Sin productos</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?php echo isset($category['created_at']) ? $category['created_at'] : 'N/A'; ?></td>
                                         <td>
                                             <div class="btn-group btn-group-sm">
                                                 <a class="btn btn-outline-primary" title="Editar" href="categories/edit/<?php echo $category['id']; ?>">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <button class="btn btn-outline-danger" title="Eliminar" onclick="delete_category(<?php echo $category['id']; ?>)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                                <?php if ($category['has_products']): ?>
+                                                    <button class="btn btn-outline-danger" title="No se puede eliminar: tiene productos asociados" disabled>
+                                                        <i class="fas fa-ban"></i>
+                                                    </button>
+                                                <?php else: ?>
+                                                    <button class="btn btn-outline-danger" title="Eliminar" onclick="delete_category(<?php echo $category['id']; ?>)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                <?php endif; ?>
                                             </div>
                                         </td>
                                     </tr>
