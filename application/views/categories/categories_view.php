@@ -43,7 +43,7 @@
                         <!-- Controles de búsqueda y paginación -->
                         <div class="row g-2">
                             <div class="col-md-6">
-                                <?php echo form_open('categories/index', array('method' => 'GET', 'class' => 'd-flex gap-2')); ?>
+                                <form method="GET" action="<?php echo base_url('categories/index'); ?>" class="d-flex gap-2">
                                     <input type="text" name="search" class="form-control form-control-sm" 
                                            placeholder="Buscar por nombre o descripción..." 
                                            value="<?php echo htmlspecialchars($search_term); ?>">
@@ -57,7 +57,7 @@
                                             <i class="fas fa-times"></i>
                                         </a>
                                     <?php endif; ?>
-                                <?php echo form_close(); ?>
+                                </form>
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex justify-content-end align-items-center gap-2">

@@ -24,10 +24,8 @@ class Categories_model extends CI_Model {
 
     // Buscar categorías con paginación
     public function search_categories($search, $limit, $offset) {
-        $this->db->group_start();
         $this->db->like('name', $search);
         $this->db->or_like('description', $search);
-        $this->db->group_end();
         $this->db->order_by('id', 'DESC');
         $this->db->limit($limit, $offset);
         return $this->db->get('categories')->result_array();
@@ -40,10 +38,8 @@ class Categories_model extends CI_Model {
 
     // Contar resultados de búsqueda
     public function count_search_results($search) {
-        $this->db->group_start();
         $this->db->like('name', $search);
         $this->db->or_like('description', $search);
-        $this->db->group_end();
         return $this->db->count_all_results('categories');
     }
 

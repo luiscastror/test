@@ -12,8 +12,10 @@
             $per_page = $this->input->get('per_page') ? (int)$this->input->get('per_page') : 5;
             $offset = (int)$offset;
             
+            // Limpiar búsqueda y filtrar tokens CSRF
             if ($search) {
                 $search = $this->security->xss_clean($search);
+                $search = trim($search);
             }
 
             $config = array();
@@ -54,15 +56,16 @@
                 $config['total_rows'] = $this->categories_model->count_search_results($search);
                 $categories = $this->categories_model->search_categories($search, $per_page, $offset);
                 
-                $config['suffix'] = '?search=' . urlencode($search) . '&per_page=' . $per_page;
-                $config['first_url'] = $config['base_url'] . '/0?search=' . urlencode($search) . '&per_page=' . $per_page;
+                $search_param = urlencode($search);
+                $config['suffix'] = "?search={$search_param}&per_page={$per_page}";
+                $config['first_url'] = $config['base_url'] . "/0?search={$search_param}&per_page={$per_page}";
             } else {
                 $config['total_rows'] = $this->categories_model->count_all_categories();
                 $categories = $this->categories_model->get_categories_paginated($per_page, $offset);
                 
                 if ($per_page != 5) {
-                    $config['suffix'] = '?per_page=' . $per_page;
-                    $config['first_url'] = $config['base_url'] . '/0?per_page=' . $per_page;
+                    $config['suffix'] = "?per_page={$per_page}";
+                    $config['first_url'] = $config['base_url'] . "/0?per_page={$per_page}";
                 }
             }
 
