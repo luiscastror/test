@@ -21,7 +21,7 @@
       </ul>
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link"><?php echo $this->session->userdata('user_name'); ?></a>
+          <a class="nav-link"><?php echo $this->session->userdata('user_name'); ?> - <?php echo strtoupper($this->session->userdata('user_role')); ?></a>
         </li>  
         <li class="nav-item">
           <a class="nav-link" href="<?php echo base_url('auth/logout'); ?>">Logout</a>

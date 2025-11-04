@@ -27,6 +27,28 @@ CREATE TABLE IF NOT EXISTS `items` (
   CONSTRAINT `fk_items_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Verificar que la tabla users existe (debería existir ya)
+-- Si no existe, crear la tabla users básica
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','usuario') NOT NULL DEFAULT 'usuario',
+  `status` enum('activo','inactivo') NOT NULL DEFAULT 'activo',
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Insertar usuarios de prueba
+-- Contraseña para ambos usuarios: "123456"
+INSERT INTO `users` (`name`, `email`, `password`, `role`, `status`) VALUES
+('Administrador', 'admin@gmail.com', '$2y$10$jmExgnJ/ntNrqwJMEleM5u1fHkFsGjgKNwApg8eavQqXHojCLL4Ju', 'admin', 'activo'),
+('Usuario Normal', 'user@gmail.com', '$2y$10$jmExgnJ/ntNrqwJMEleM5u1fHkFsGjgKNwApg8eavQqXHojCLL4Ju', 'usuario', 'activo');
+
+
 -- Insertar algunas categorías de ejemplo
 INSERT INTO `categories` (`name`, `description`) VALUES
 ('Electrónicos', 'Dispositivos electrónicos y tecnología'),
@@ -43,24 +65,3 @@ INSERT INTO `items` (`name`, `description`, `price`, `stock`, `category_id`) VAL
 ('Sofá de 3 plazas', 'Sofá cómodo para sala de estar', 799.99, 5, 3),
 ('Balón de fútbol', 'Balón oficial FIFA para fútbol profesional', 39.99, 30, 4),
 ('El Quijote de la Mancha', 'Clásico de la literatura española', 19.99, 100, 5);
-
--- Verificar que la tabla users existe (debería existir ya)
--- Si no existe, crear la tabla users básica
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('admin','user') NOT NULL DEFAULT 'user',
-  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Insertar usuarios de prueba
--- Contraseña para ambos usuarios: "123456"
-INSERT INTO `users` (`name`, `email`, `password`, `role`, `status`) VALUES
-('Administrador', 'admin@gmail.com', '$2y$10$jmExgnJ/ntNrqwJMEleM5u1fHkFsGjgKNwApg8eavQqXHojCLL4Ju', 'admin', 'activo'),
-('Usuario Normal', 'user@gmail.com', '$2y$10$jmExgnJ/ntNrqwJMEleM5u1fHkFsGjgKNwApg8eavQqXHojCLL4Ju', 'usuario', 'activo');
