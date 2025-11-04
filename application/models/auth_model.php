@@ -14,9 +14,6 @@ class Auth_model extends CI_Model {
     }
 
     public function authenticate($data) {
-
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-
         $this->db->where('email', $data['email'])
             ->where('password', $data['password']);
 
