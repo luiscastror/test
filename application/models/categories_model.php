@@ -15,6 +15,38 @@ class Categories_model extends CI_Model {
         return $this->db->get('categories')->result_array();
     }
 
+    // Obtener categorías con paginación
+    public function get_categories_paginated($limit, $offset) {
+        $this->db->order_by('id', 'DESC');
+        $this->db->limit($limit, $offset);
+        return $this->db->get('categories')->result_array();
+    }
+
+    // Buscar categorías con paginación
+    public function search_categories($search, $limit, $offset) {
+        $this->db->group_start();
+        $this->db->like('name', $search);
+        $this->db->or_like('description', $search);
+        $this->db->group_end();
+        $this->db->order_by('id', 'DESC');
+        $this->db->limit($limit, $offset);
+        return $this->db->get('categories')->result_array();
+    }
+
+    // Contar total de categorías
+    public function count_all_categories() {
+        return $this->db->count_all('categories');
+    }
+
+    // Contar resultados de búsqueda
+    public function count_search_results($search) {
+        $this->db->group_start();
+        $this->db->like('name', $search);
+        $this->db->or_like('description', $search);
+        $this->db->group_end();
+        return $this->db->count_all_results('categories');
+    }
+
     public function update($id, $data) {
         $this->db->where('id', $id);
         return $this->db->update('categories', $data);
