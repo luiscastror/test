@@ -38,8 +38,16 @@
 |
 */
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = "panel";
 $route['404_override'] = '';
+
+// Rutas amigables
+$route['login'] = 'auth/login';
+$route['logout'] = 'auth/logout';
+$route['dashboard'] = 'panel/index';
+$route['usuarios'] = 'users/index';
+$route['categorias'] = 'categories/index';
+$route['productos'] = 'items/index';
 
 
 /* End of file routes.php */

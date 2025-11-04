@@ -12,6 +12,12 @@ class Auth extends CI_Controller {
 	}
 
 	public function login() {
+		// Si ya está logueado, redirigir al panel
+		if ($this->session->userdata('user_id')) {
+			redirect('panel');
+			return;
+		}
+		
 		$this->load->view('headers_view');
 		$this->load->view('auth/login_view');
 		$this->load->view('footer_view');

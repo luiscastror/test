@@ -10,7 +10,21 @@
 |
 */
 
+// Hook de autenticación centralizado
+$hook['post_controller_constructor'][] = array(
+    'class'    => 'Auth_check',
+    'function' => 'check_auth',
+    'filename' => 'auth_check.php',
+    'filepath' => 'hooks'
+);
 
+// Hook para verificar usuarios ya logueados
+$hook['pre_controller'][] = array(
+    'class'    => 'Auth_check',
+    'function' => 'check_already_logged',
+    'filename' => 'auth_check.php',
+    'filepath' => 'hooks'
+);
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */
